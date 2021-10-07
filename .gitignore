@@ -326,3 +326,6 @@ src/AngularWebpackVisualStudio/wwwroot/
 src/AngularRedux/wwwroot
 src/AspNetCoreAngularSignalR/wwwroot/
 /src/AngularSignalR/dist/
+
+# vscode
+.vscode
