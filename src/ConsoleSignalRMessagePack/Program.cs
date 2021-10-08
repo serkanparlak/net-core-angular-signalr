@@ -41,7 +41,7 @@ namespace ConsoleSignalRMessagePack
         public static async Task SetupSignalRHubAsync()
         {
             _hubConnection = new HubConnectionBuilder()
-                 .WithUrl("https://localhost:44324/loopymessage")
+                 .WithUrl("http://localhost:5000/loopymessage")
                  .AddMessagePackProtocol()
                  .ConfigureLogging(factory =>
                  {

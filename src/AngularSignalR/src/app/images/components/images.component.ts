@@ -20,7 +20,7 @@ export class ImagesComponent implements OnInit {
 
   ngOnInit() {
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:44324/zub')
+      .withUrl('http://localhost:5000/zub')
       .configureLogging(signalR.LogLevel.Trace)
       .build();
 

@@ -40,7 +40,7 @@ namespace Angular2WebpackVisualStudio
                         builder
                             .AllowCredentials()
                             .WithOrigins(
-                                "https://localhost:4200")
+                                "https://localhost:4300")
                             .SetIsOriginAllowedToAllowWildcardSubdomains()
                             .AllowAnyHeader()
                             .AllowAnyMethod();

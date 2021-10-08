@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:44324/loopy')
+      .withUrl('http://localhost:5000/loopy')
       .configureLogging(signalR.LogLevel.Trace)
       .build();
 

@@ -9,13 +9,13 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class NewsService {
-  private _hubConnection: HubConnection | undefined;
+  private hubConnection: HubConnection | undefined;
   private actionUrl: string;
   private headers: HttpHeaders;
 
   constructor(private http: HttpClient, private store: Store<any>) {
     this.init();
-    this.actionUrl = 'https://localhost:44324/api/news/';
+    this.actionUrl = 'http://localhost:5000/api/news/';
 
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
@@ -23,21 +23,21 @@ export class NewsService {
   }
 
   send(newsItem: NewsItem): NewsItem {
-    if (this._hubConnection) {
-      this._hubConnection.invoke('Send', newsItem);
+    if (this.hubConnection) {
+      this.hubConnection.invoke('Send', newsItem);
     }
     return newsItem;
   }
 
   joinGroup(group: string): void {
-    if (this._hubConnection) {
-      this._hubConnection.invoke('JoinGroup', group);
+    if (this.hubConnection) {
+      this.hubConnection.invoke('JoinGroup', group);
     }
   }
 
   leaveGroup(group: string): void {
-    if (this._hubConnection) {
-      this._hubConnection.invoke('LeaveGroup', group);
+    if (this.hubConnection) {
+      this.hubConnection.invoke('LeaveGroup', group);
     }
   }
 
@@ -46,20 +46,20 @@ export class NewsService {
   }
 
   private init() {
-    this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:44324/looney')
+    this.hubConnection = new signalR.HubConnectionBuilder()
+      .withUrl('http://localhost:5000/looney')
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    this._hubConnection.start().catch((err) => console.error(err.toString()));
+    this.hubConnection.start().catch((err) => console.error(err.toString()));
 
-    this._hubConnection.on('Send', (newsItem: NewsItem) => {
+    this.hubConnection.on('Send', (newsItem: NewsItem) => {
       this.store.dispatch(
         newsAction.recieveNewsItemAction({ payload: newsItem })
       );
     });
 
-    this._hubConnection.on('JoinGroup', (data: string) => {
+    this.hubConnection.on('JoinGroup', (data: string) => {
       console.log('recieved data from the hub');
       console.log(data);
       this.store.dispatch(
@@ -67,11 +67,11 @@ export class NewsService {
       );
     });
 
-    this._hubConnection.on('LeaveGroup', (data: string) => {
+    this.hubConnection.on('LeaveGroup', (data: string) => {
       this.store.dispatch(newsAction.recieveGroupLeftAction({ payload: data }));
     });
 
-    this._hubConnection.on('History', (newsItems: NewsItem[]) => {
+    this.hubConnection.on('History', (newsItems: NewsItem[]) => {
       console.log('recieved history from the hub');
       console.log(newsItems);
       this.store.dispatch(
